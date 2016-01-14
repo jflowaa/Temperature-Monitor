@@ -1,6 +1,5 @@
 import os
 from flask import Flask, render_template
-from flask.ext.script import Manager
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask import request
@@ -15,7 +14,6 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['DEBUG'] = False 
 
-manager = Manager(app)
 db = SQLAlchemy(app)
 boostrap = Bootstrap(app)
 
@@ -55,4 +53,4 @@ def add_record():
     return "200"
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()
