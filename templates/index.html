@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Temperature Monitor{% endblock %}
+
+{% block page_content %}
+<div id="content">
+    {{ chart.render()|safe}}
+</div>
+{% endblock %}
