@@ -1,10 +1,11 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Flasky{% endblock %}
+{% block title %}Temperature Monitor{% endblock %}
 
 {% block head %}
 {{ super() }}
-<link href="/static/main.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="{{ url_for('static', filename='temperature.ico')  }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='temperature.ico')  }}" type="image/x-icon">
 {% endblock %}
 
 {% block navbar %}
@@ -21,7 +22,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Thing</a></li>
+                <li><a href="/thing">Thing</a></li>
             </ul>
         </div>
     </div>
