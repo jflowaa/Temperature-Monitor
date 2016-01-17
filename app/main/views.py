@@ -16,15 +16,15 @@ def index():
             y_title="Temperature (F)", fill=True, interpolate='hermite',
             style=DefaultStyle, print_values=True,
             disable_xml_declaration=True)
-    records = Record.query.all()
+    records = reversed(Record.query.order_by(Record.id.desc()).limit(18).all())
     times = []
     temps = []
     for record in records:
         time = record.time.strftime("%I:%M %p")
         times.append(str(time))
         temps.append(record.temperature)
-    chart.x_labels = times[-18:]
-    chart.add("Room Name", temps[-18:])
+    chart.x_labels = times
+    chart.add("Room Name", temps)
     chart.value_formatter = lambda x: "%.2f" % x
     return render_template("index.html", title=title, chart=chart)
 
