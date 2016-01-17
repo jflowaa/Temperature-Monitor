@@ -4,6 +4,7 @@ from ..models import Record
 from . import main
 from flask import request
 from datetime import datetime
+from dateutil import tz
 import pygal
 from pygal.style import DefaultStyle
 
@@ -12,25 +13,26 @@ from pygal.style import DefaultStyle
 def index():
     title = "Temperature Monitor"
     chart = pygal.StackedLine(title=title, width=1200, x_title="Time (CST)",
-            y_title="Temperature (F)", fill=True, interpolate='cubic',
-            style=DefaultStyle)
+            y_title="Temperature (F)", fill=True, interpolate='hermite',
+            style=DefaultStyle, print_values=True,
+            disable_xml_declaration=True)
     records = Record.query.all()
     times = []
     temps = []
     for record in records:
-        time = str(record.time).split(":")
-        time[0] = int(time[0]) - 6
-        times.append("{}:{}".format(str(time[0]), time[1]))
+        time = record.time.strftime("%I:%M %p")
+        times.append(str(time))
         temps.append(record.temperature)
-    chart.x_labels = times[-20:]
-    chart.add("Room Name", temps[-20:])
+    chart.x_labels = times[-18:]
+    chart.add("Room Name", temps[-18:])
+    chart.value_formatter = lambda x: "%.2f" % x
     return render_template("index.html", title=title, chart=chart)
 
 
 @main.route('/addrecord', methods=['POST'])
 def add_record():
     temp = request.form["temperature"]
-    time = datetime.time(datetime.utcnow())
+    time = datetime.time(datetime.now(tz.gettz('US/Central')))
     record = Record(temperature=temp, time=time)
     db.session.add(record)
     return "200"
